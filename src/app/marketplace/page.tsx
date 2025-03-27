@@ -195,7 +195,7 @@ export default function AgentsPage() {
                       Preview
                     </Button>
                     <Button size="sm">
-                      {userId !== agent.owner ? "Manage" : "Buy"}
+                      {userId === agent.owner ? "Manage" : "Buy"}
                     </Button>
                   </div>
                 </CardFooter>

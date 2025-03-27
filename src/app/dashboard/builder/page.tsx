@@ -470,11 +470,12 @@ export default function AgentBuilder() {
     createAgent({
       owner: monetizationdata.userId,
       name: monetizationdata.name,
+      description:
+        monetizationdata.description || "Automatically generated agent",
       nodes: nodes.map((node) => {
         delete node.dragging; // Remove the position property
         delete node.selected;
         const { execute, ...rest } = node.data;
-
         return {
           ...node,
           data: {

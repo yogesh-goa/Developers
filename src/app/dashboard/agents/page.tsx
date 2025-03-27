@@ -1,96 +1,115 @@
-'use client'
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Bot, Plus, MoreHorizontal, Users, BarChart } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import { useEffect, useState } from "react"
-import { useAuth, UserButton } from "@clerk/nextjs"
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Bot, Plus, MoreHorizontal} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { useAuth, UserButton } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { useEffect, useState } from "react";
 
 export default function AgentsPage() {
-  interface Agent {
-    id: string;
-    name: string;
-    monetization: {
-      model: string;
-      isMarketplaceListed: boolean;
-      _id: string;
-    };
-    createdAt: string;
-    description: string;
-    model: string;
-    status: string;
-    users: number;
-    apiCalls: number;
-    price: string;
-    owner:string;
-  }
-  const { isLoaded, isSignedIn, userId } = useAuth()
-useEffect(() => {
-    fetch('/api/getUserAgents', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            const updatedAgents = Array.isArray(data) ? data.map((agent: Agent) => ({
-                ...agent,
-                description: agent.description || "A newly created agent for testing purposes",
-                model: agent.model || "Not specified",
-                status: agent.status || "draft",
-                users: agent.users || 0,
-                apiCalls: agent.apiCalls || 0,
-                price: agent.price || "Free",
-            })) : [];
-            setagents(updatedAgents);
-        })
-        .catch((error) => console.error('Error fetching agents:', error));
-}, [userId]);
+  const { isLoaded, isSignedIn, userId } = useAuth();
+
+  // const agents = useMutation(api.tasks.getUserAgent,{owner:userId})
+  const userAgent = useMutation(api.tasks.getUserAgent);
+  const agent = userAgent({
+    owner: userId || "user_2usykddvvkCNH1ykUs2DrFcqPOG",
+  });
   const [agents, setagents] = useState<Agent[]>([])
+  useEffect(() => {
+      agent.then((resolvedAgent) => {
+          setagents(resolvedAgent);
+      });
+  }, [agent]);
+  if (!isLoaded || !agent) {
+    return <div>Loading...</div>;
+  }
+  interface Agent {
+    _id: string;
+    _creationTime: number;
+    owner: string;
+    description: string;
+    name: string;
+    nodes: {
+      type: string;
+      id: string;
+      position: { x: number; y: number };
+      measured: { width: number; height: number };
+      data: Record<string, unknown>;
+    }[];
+    edges: Record<string, unknown>[];
+    monetizationData: {
+      monetizationModel: string;
+      isMarketplaceListed: boolean;
+    };
+    isActive: boolean;
+  }
+
   
-    if (!isLoaded) {
-      return <div>Loading...</div>
-    }
-    if (!isSignedIn) {
-      // You could also add a redirect to the sign-in page here
-      return <div>Sign in to view this page</div>
-    }
-    
+ 
+  if (!isSignedIn) {
+    // You could also add a redirect to the sign-in page here
+    return <div>Sign in to view this page</div>;
+  }
   
+
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-10 border-b bg-background">
+      {/* <header className="sticky top-0 z-10 border-b bg-background">
         <div className="container flex h-16 items-center justify-between px-4">
-          <Link href={'/'} className="flex items-center gap-2 font-bold text-xl">
+          <Link
+            href={"/"}
+            className="flex items-center gap-2 font-bold text-xl"
+          >
             <Bot className="h-6 w-6 text-primary" />
             <span>AutoAgent</span>
           </Link>
           <nav className="hidden md:flex gap-6">
-            <Link href="/dashboard" className="text-sm font-medium hover:underline underline-offset-4">
+            <Link
+              href="/dashboard"
+              className="text-sm font-medium hover:underline underline-offset-4"
+            >
               Dashboard
             </Link>
-            <Link href="/dashboard/agents" className="text-sm font-medium hover:underline underline-offset-4">
+            <Link
+              href="/dashboard/agents"
+              className="text-sm font-medium hover:underline underline-offset-4"
+            >
               My Agents
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            
-            <UserButton/>
+            <UserButton />
           </div>
         </div>
-      </header>
+      </header> */}
       <main className="flex-1 py-8 px-6">
         <div className="container px-4">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">My AI Agents</h1>
-              <p className="text-muted-foreground">Manage and monitor your AI agents</p>
+              <h1 className="text-3xl font-bold tracking-tight">
+                My AI Agents
+              </h1>
+              <p className="text-muted-foreground">
+                Manage and monitor your AI agents
+              </p>
             </div>
-            <Link href="/dashboard/builder">
+            <Link href="/builder">
               <Button className="mt-4 md:mt-0 gap-2">
                 <Plus className="h-4 w-4" /> Create New Agent
               </Button>
@@ -98,26 +117,22 @@ useEffect(() => {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {agents.map((agent) => (
-              <Card key={agent.id} className="overflow-hidden">
+            
+            {agents?.map((agent) => (
+              <Card key={agent._id} className="overflow-hidden">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="space-y-1">
                       <CardTitle className="flex items-center gap-2">
                         {agent.name}
-                        {agent.status === "active" && (
+                        {agent.isActive === true && (
                           <Badge variant="default" className="ml-2">
                             Active
                           </Badge>
                         )}
-                        {agent.status === "draft" && (
+                        {agent.isActive === false && (
                           <Badge variant="outline" className="ml-2">
                             Draft
-                          </Badge>
-                        )}
-                        {agent.status === "inactive" && (
-                          <Badge variant="secondary" className="ml-2">
-                            Inactive
                           </Badge>
                         )}
                       </CardTitle>
@@ -143,30 +158,25 @@ useEffect(() => {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <div className="text-muted-foreground">Model</div>
-                      <div className="font-medium">{agent.model}</div>
+                      <div className="font-medium">
+                        {agent.monetizationData.monetizationModel}
+                      </div>
                     </div>
                     <div>
                       <div className="text-muted-foreground">Created</div>
-                      <div className="font-medium">{agent.createdAt}</div>
+                      <div className="font-medium">{agent._creationTime}</div>
                     </div>
                     <div>
                       <div className="text-muted-foreground">Pricing</div>
-                      <div className="font-medium">{agent.price}</div>
+                      <div className="font-medium">
+                        {agent.monetizationData.isMarketplaceListed}
+                      </div>
                     </div>
                     <div>
                       <div className="text-muted-foreground">Type</div>
-                      <div className="font-medium capitalize">{agent.monetization.model}</div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t grid grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{agent.users.toLocaleString()} users</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <BarChart className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{agent.apiCalls.toLocaleString()} calls</span>
+                      <div className="font-medium capitalize">
+                        {agent.monetizationData.isMarketplaceListed}
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -175,7 +185,9 @@ useEffect(() => {
                     <Button variant="outline" size="sm">
                       Preview
                     </Button>
-                    <Button size="sm">Manage</Button>
+                    <Button size="sm">
+                      {userId === agent.owner ? "Manage" : "Buy"}
+                    </Button>
                   </div>
                 </CardFooter>
               </Card>
@@ -184,5 +196,5 @@ useEffect(() => {
         </div>
       </main>
     </div>
-  )
+  );
 }
