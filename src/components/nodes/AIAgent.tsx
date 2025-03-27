@@ -1,5 +1,5 @@
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
-import {  useContext, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { DataPassing } from '@/app/builder/page';
 import { BotIcon } from 'lucide-react';
 import { executeAIAgentNode } from '@/controllers/nodes';
@@ -12,6 +12,11 @@ function AIAgentNode({ data, isConnectable }:any) {
   const [query, setQuery] = useState("")
   const [isQueryDisabled, setIsQueryDisabled] = useState(false)
   // AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA
+
+  useEffect(()=>{
+      if(data.apiKey) setApiKey(data.apiKey)
+      if(data.query) setQuery(data.query)
+  },[data])
 
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);

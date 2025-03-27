@@ -31,7 +31,7 @@ export default function TrainingResults({ results }: TrainingResultsProps) {
 
     // Draw accuracy chart
     const accuracyCtx = accuracyChartRef.current.getContext("2d")
-    if (accuracyCtx) {
+    {/*if (accuracyCtx) {
       drawLineChart(
         accuracyCtx,
         results.history.map((h) => h.epoch),
@@ -40,10 +40,10 @@ export default function TrainingResults({ results }: TrainingResultsProps) {
         "rgb(34, 197, 94)",
         "rgba(34, 197, 94, 0.2)",
       )
-    }
+    }*/}
 
     // Draw loss chart
-    const lossCtx = lossChartRef.current.getContext("2d")
+    {/*const lossCtx = lossChartRef.current.getContext("2d")
     if (lossCtx) {
       drawLineChart(
         lossCtx,
@@ -53,7 +53,7 @@ export default function TrainingResults({ results }: TrainingResultsProps) {
         "rgb(239, 68, 68)",
         "rgba(239, 68, 68, 0.2)",
       )
-    }
+    }*/}
   }, [results])
 
   const drawLineChart = (
@@ -133,17 +133,17 @@ export default function TrainingResults({ results }: TrainingResultsProps) {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+      <div className="grid grid-cols-1 h-full md:grid-cols-3  w-full gap-4">
+        <Card className="col-span-3 h-full">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-primary mb-1">{formatPercent(results.accuracy)}</div>
+              <div className="text-3xl font-bold text-primary mb-1">{results.accuracy.toPrecision(4)}%</div>
               <div className="text-sm text-muted-foreground">Accuracy</div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        {/*<Card>
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <div className="text-3xl font-bold text-destructive mb-1">{results.loss.toFixed(4)}</div>
@@ -159,118 +159,12 @@ export default function TrainingResults({ results }: TrainingResultsProps) {
               <div className="text-sm text-muted-foreground">F1 Score</div>
             </div>
           </CardContent>
-        </Card>
+        </Card>*/}
       </div>
 
-      <Tabs defaultValue="charts">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="charts">
-            <LineChart className="h-4 w-4 mr-2" />
-            Training Charts
-          </TabsTrigger>
-          <TabsTrigger value="metrics">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Detailed Metrics
-          </TabsTrigger>
-        </TabsList>
+     
 
-        <TabsContent value="charts" className="space-y-4 pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-card rounded-lg p-4 border">
-              <canvas ref={accuracyChartRef} height={200} />
-            </div>
-            <div className="bg-card rounded-lg p-4 border">
-              <canvas ref={lossChartRef} height={200} />
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="metrics" className="pt-4">
-          <div className="bg-card rounded-lg p-6 border">
-            <h3 className="text-lg font-medium mb-4">Performance Metrics</h3>
-
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Accuracy</span>
-                <div className="flex items-center">
-                  <div className="w-32 h-2 bg-muted rounded-full mr-3">
-                    <div className="h-full bg-primary rounded-full" style={{ width: `${results.accuracy * 100}%` }} />
-                  </div>
-                  <span className="text-sm font-medium">{formatPercent(results.accuracy)}</span>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Precision</span>
-                <div className="flex items-center">
-                  <div className="w-32 h-2 bg-muted rounded-full mr-3">
-                    <div
-                      className="h-full bg-blue-500 rounded-full"
-                      style={{ width: `${results.metrics.precision * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">{formatPercent(results.metrics.precision)}</span>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Recall</span>
-                <div className="flex items-center">
-                  <div className="w-32 h-2 bg-muted rounded-full mr-3">
-                    <div
-                      className="h-full bg-purple-500 rounded-full"
-                      style={{ width: `${results.metrics.recall * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">{formatPercent(results.metrics.recall)}</span>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">F1 Score</span>
-                <div className="flex items-center">
-                  <div className="w-32 h-2 bg-muted rounded-full mr-3">
-                    <div
-                      className="h-full bg-amber-500 rounded-full"
-                      style={{ width: `${results.metrics.f1Score * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">{formatPercent(results.metrics.f1Score)}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-6 border-t">
-              <h4 className="text-sm font-medium mb-3">Training Summary</h4>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground">Epochs</span>
-                  <span className="text-sm font-medium">{results.history.length}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground">Final Loss</span>
-                  <span className="text-sm font-medium">{results.loss.toFixed(4)}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground">Best Epoch</span>
-                  <span className="text-sm font-medium">
-                    {results.history.reduce(
-                      (best, curr, i) => (curr.accuracy > results.history[best].accuracy ? i : best),
-                      0,
-                    ) + 1}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground">Training Status</span>
-                  <span className="flex items-center text-sm font-medium text-green-600">
-                    <CheckCircle2 className="h-3 w-3 mr-1" /> Completed
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+         
     </div>
   )
 }

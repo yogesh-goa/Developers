@@ -164,7 +164,7 @@ async function executeNodeRecursively(
 
 // Main execution function
 async function start(nodes: any[], edges: any[]) {
-  executionResults = { "0": [], "1": [], "2": [], "3": [], "4": [] };
+  executionResults = {  };
   globalGraph = buildGraph(nodes, edges);
   
   const executionOrder = determineExecutionOrder(nodes, edges);

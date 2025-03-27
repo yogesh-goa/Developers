@@ -261,13 +261,10 @@ export default function AgentBuilder() {
     await executeNodeRecursively(executionOrder, 0);
   };
 
-  /*
-    const start = async () => {
+  
+    const start2 = async () => {
     try {
-      // Using GET request with query parameters
-      const nodesString = encodeURIComponent(JSON.stringify(nodes));
-      const edgesString = encodeURIComponent(JSON.stringify(edges));
-      
+
      
       // Alternative using POST request
       
@@ -286,8 +283,8 @@ export default function AgentBuilder() {
         throw new Error(data.error || 'Failed to execute flow');
       }
   
-      console.log('Execution Results:', data.results);
-      console.log('Execution Order:', data.executionOrder);
+      console.log('Execution Result:', data.results[data.executionOrder[data.executionOrder.length-1]]);
+
       
       // Update local state with results if needed
       executionResults = data.results;
@@ -297,7 +294,7 @@ export default function AgentBuilder() {
       toast.error('Failed to execute flow');
     }
   };
-  */
+  
 
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);

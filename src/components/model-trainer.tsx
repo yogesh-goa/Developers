@@ -52,6 +52,7 @@ export default function ModelTrainer() {
 
         const data = await response.json();
         console.log("Response:", data);
+        setResults({accuracy: data.accuracy})
     } catch (error) {
         console.error("Upload error:", error);
     }

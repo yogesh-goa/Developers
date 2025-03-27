@@ -42,6 +42,10 @@ function DescriptionNode({ data, id, isConnectable }:any) {
     }
   }, [fileUploadIndicator]);
 
+  useEffect(()=>{
+    if(data.input1) setText1(data.input1)
+  },[data])
+
   const connections = useNodeConnections({
     handleType: 'target',
     handleId: 'b',
