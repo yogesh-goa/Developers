@@ -42,6 +42,7 @@ export default defineSchema({
 
   customModel: defineTable({
     name:v.string(),
+    owner:v.string(),
     endpoint:v.string(),
     inputs:v.string(),
   })

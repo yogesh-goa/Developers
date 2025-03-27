@@ -80,6 +80,23 @@ export const getUserAgent = mutation({
   },
 });
 
+export const getUserCustomModel = mutation({
+  args: {
+    owner: v.string(),
+  },
+  handler: async (ctx, args) => {
+    // Implement your mutation logic here
+    const agents = await ctx.db
+      .query("customModel")
+      .filter((q) => q.eq(q.field("owner"), args.owner))
+      .collect();
+    if (agents.length === 0) {
+      throw new Error("No agents found for the specified owner");
+    }
+    return agents;
+  },
+});
+
 export const getOneAgent = mutation({
   args: {
     id: v.string(),
@@ -98,12 +115,14 @@ export const createCustomModel = mutation({
     name:v.string(),
     endpoint:v.string(),
     inputs:v.string(),
+    owner:v.string()
   },
   handler:async(ctx,args)=>{
     await ctx.db.insert("customModel",{
       name:args.name,
       endpoint:args.endpoint,
-      inputs:args.inputs
+      inputs:args.inputs,
+      owner:args.owner
     })
     return {success:true}
   }
