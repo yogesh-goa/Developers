@@ -13,7 +13,7 @@
 ## Individual Contributions
 
 - *Kedron Lucas:* Custom Model Integration, Flask Backend for hosting the regression model that was planned to demonstrate the Costom model AI Agent. Worked on the model architecture creation function, training for the model, and also using the model for predicting outputs. Worked on the marketplace logic, AI Chatbot implementation for making AI Agent creation easier. 
-- *Shridhar Kamat:* Worked on the flow connection logic, Handled the canvas frontend, Backend logic for determining the connectivity between nodes. Worked on improving the server side implementation to improve making API calls for the AI AAgents created by the user. This is beneficial in the long run for scalling the product. 
+- *Shridhar Kamat:* Worked on the flow connection logic, Handled the canvas frontend, Backend logic for determining the connectivity between nodes. Worked on improving the server side implementation to improve making API calls for the AI Agents created by the user. This is beneficial in the long run for scaling the product. 
 - *Rushikesh Goankar:* Frontend, Worked on the flow generation logic. Backend logic for the market place logic, that includes selling the AI Agent.Worked on refining the user dashboard, that helps user keep track of the products being sold. Also improved the market place, by including the trending section. Worked on creating the chatbot for the user, to make the process of creating AI Agent easier for the users, speciallty those that dont have much experience.
 
 ## Folder Structure
@@ -56,9 +56,16 @@ Project
 
 ## Tech Stack
 
-- **Frontend:** React.js, Next.js
+- **Frontend:** Next.js, React.js
 - **Backend:** Node.js, Express
 - **Database:** Convex DB
+- **UI Components** Shadcn, RadixUI
+- **Styling** Tailwind
+- **Flow Building Library** Reactflow
+- **Charts** Recharts
+- **Form Handling** React Hook Form
+- **Languages** TypeScript, JavaScript, Python
+- **Icons** Lucide Icons
 - **AI Model Integration:** Gemini, Groq
 - **Authentication:** Clerk
 - **Hosting & Deployment:** Vercel
