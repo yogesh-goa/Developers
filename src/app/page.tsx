@@ -11,7 +11,7 @@ export default async function LandingPage() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-xl">
             <Bot className="h-6 w-6 text-primary" />
-            <span>AgentForge</span>
+            <span>AutoAgent</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="#features" className="text-sm font-medium hover:text-primary">
@@ -504,7 +504,7 @@ export default async function LandingPage() {
         <div className="container flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between md:py-12">
           <div className="flex items-center gap-2 font-bold">
             <Bot className="h-6 w-6 text-primary" />
-            <span>AgentForge</span>
+            <span>AutoAgent</span>
           </div>
           <nav className="flex flex-wrap gap-4 md:gap-6">
             <Link href="#" className="text-xs hover:underline md:text-sm">
@@ -517,7 +517,7 @@ export default async function LandingPage() {
               Contact
             </Link>
           </nav>
-          <div className="text-xs text-muted-foreground md:text-sm">© 2025 AgentForge. All rights reserved.</div>
+          <div className="text-xs text-muted-foreground md:text-sm">© 2025 AutoAgent. All rights reserved.</div>
         </div>
       </footer>
     </div>

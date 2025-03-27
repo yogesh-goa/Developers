@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Bot, Plus, MoreHorizontal} from "lucide-react";
+import {  Plus, MoreHorizontal} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { useAuth, UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ export default function AgentsPage() {
       agent.then((resolvedAgent) => {
           setagents(resolvedAgent);
       });
-  }, [agent]);
+  }, []);
   if (!isLoaded || !agent) {
     return <div>Loading...</div>;
   }
@@ -182,9 +182,11 @@ export default function AgentsPage() {
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
                   <div className="flex justify-between w-full">
+                    <Link href={'/builder2/'+agent._id}>
                     <Button variant="outline" size="sm">
                       Preview
                     </Button>
+                    </Link>
                     <Button size="sm">
                       {userId === agent.owner ? "Manage" : "Buy"}
                     </Button>

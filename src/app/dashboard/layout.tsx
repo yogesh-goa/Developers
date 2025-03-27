@@ -44,7 +44,7 @@ export default function DashboardLayout({
           <SidebarHeader className="border-b">
             <div className="flex items-center gap-2 px-2 py-3">
               <Bot className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">AgentForge</span>
+              <span className="font-bold text-xl">AutoAgent</span>
             </div>
           </SidebarHeader>
           <SidebarContent>

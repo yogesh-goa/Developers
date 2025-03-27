@@ -17,7 +17,7 @@ export const createUser = mutation({
           isExecuting: v.boolean(),
           input1: v.optional(v.string()),
           input2: v.optional(v.string()),
-          edpoint: v.optional(v.string()),
+          endpoint: v.optional(v.string()),
           description: v.optional(v.string()),
           isStart: v.optional(v.boolean()),
           isEnd: v.optional(v.boolean()),
@@ -77,5 +77,18 @@ export const getUserAgent = mutation({
       throw new Error("No agents found for the specified owner");
     }
     return agents;
+  },
+});
+
+export const getOneAgent = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const agent = await ctx.db.query("agent").filter((q) => q.eq(q.field("_id"), args.id)).first();
+    if (!agent) {
+      throw new Error("Agent not found");
+    }
+    return agent;
   },
 });

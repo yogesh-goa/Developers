@@ -40,3 +40,5 @@ export default defineSchema({
     isActive: v.boolean(),
   }),
 });
+
+
