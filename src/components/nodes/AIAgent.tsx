@@ -2,6 +2,7 @@ import { Handle, Position, useNodeConnections } from '@xyflow/react';
 import {  useContext, useState } from 'react';
 import { DataPassing } from '@/app/dashboard/builder/page';
 import { BotIcon } from 'lucide-react';
+import { executeAIAgentNode } from '@/controllers/nodes';
  
  
 function AIAgentNode({ data, isConnectable }:any) {
@@ -14,21 +15,9 @@ function AIAgentNode({ data, isConnectable }:any) {
 
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
-    const data = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${nodeData.value}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: t[0] || nodeData.input1 }]
-        }]
-      })
-    })
-    const actualData = await data.json();
-    const content = await actualData.candidates[0].content.parts[0].text
+    const serverExecutedResponse = await executeAIAgentNode(t,nodeData)
     setIsExecuting(false);
-    return content;
+    return serverExecutedResponse;
   }
 
   const connections = useNodeConnections({

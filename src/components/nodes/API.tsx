@@ -2,6 +2,7 @@ import { useCallback, useContext, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { DataPassing } from '@/app/dashboard/builder/page';
 import { BotIcon, CableIcon } from 'lucide-react';
+import { executeAPINode } from '@/controllers/nodes';
  
 const handleStyle = { left: 10 };
  
@@ -13,11 +14,9 @@ function APINode({ data, isConnectable }:any) {
 
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
-    const data = await fetch(t[0] || nodeData.endpoint)
-    const actualData = await data.json();
-    const content = await actualData;
+    const serverExecutedResponse = await executeAPINode(t,nodeData)
     setIsExecuting(false);
-    return JSON.stringify(content);
+    return serverExecutedResponse
   }
 
   const handleEndpointValueChange = (event: any) => { 

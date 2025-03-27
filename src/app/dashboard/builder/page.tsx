@@ -261,6 +261,44 @@ export default function AgentBuilder() {
     await executeNodeRecursively(executionOrder, 0);
   };
 
+  /*
+    const start = async () => {
+    try {
+      // Using GET request with query parameters
+      const nodesString = encodeURIComponent(JSON.stringify(nodes));
+      const edgesString = encodeURIComponent(JSON.stringify(edges));
+      
+     
+      // Alternative using POST request
+      
+      const response = await fetch('/api/execute-flow', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nodes, edges }),
+      });
+      
+  
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to execute flow');
+      }
+  
+      console.log('Execution Results:', data.results);
+      console.log('Execution Order:', data.executionOrder);
+      
+      // Update local state with results if needed
+      executionResults = data.results;
+      
+    } catch (error) {
+      console.error('Error executing flow:', error);
+      toast.error('Failed to execute flow');
+    }
+  };
+  */
+
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";

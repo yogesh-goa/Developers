@@ -7,7 +7,7 @@ import { Plane, Play, PlayIcon } from 'lucide-react';
 function StartNode({ data, isConnectable }:any) {
   
 
-  const execute = async() =>{}
+  const execute = async() =>{ }
 
   data.execute = execute;
 

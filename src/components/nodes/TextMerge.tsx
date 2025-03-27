@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
 import { DataPassing } from '@/app/dashboard/builder/page';
 import { MergeIcon } from 'lucide-react';
+import { executeTextMergeNode } from '@/controllers/nodes';
  
 const handleStyle = { left: 10 };
  
@@ -57,10 +58,12 @@ function TextMergeNode({ data, id, isConnectable }:any) {
     onConnect(connections){
       setText1("AGENT OUTPUT")
       setIsText1Disabled(true);
+      data.value = true
     },
     onDisconnect(connections) {
       setText1("")
       setIsText1Disabled(false);
+      data.value = false
     },
   });
 
@@ -81,15 +84,9 @@ function TextMergeNode({ data, id, isConnectable }:any) {
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
     console.log(t, text1, text2)
-    let output;
-    if(t[0] && t[1]) output = t[0] + t[1];
-    else if(t[0]) {
-      if(isText1Disabled) output = t[0] + nodeData.input2;
-      else output = nodeData.input1 + t[0];
-    }
-    else output = nodeData.input1 + nodeData.input2;   
+    const serverExecutedResponse = await executeTextMergeNode(t, nodeData)
     setIsExecuting(false);
-    return output
+    return serverExecutedResponse;
   }
 
   const handleText1Change = (event: any) => { 

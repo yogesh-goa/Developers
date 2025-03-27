@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { FlagIcon } from 'lucide-react';
+import { executeEndNode } from '@/controllers/nodes';
  
 
  
@@ -9,7 +10,8 @@ function EndNode({ data, isConnectable }:any) {
 
   const execute = async(content:string) =>{
     console.info("Agent response: ");
-    console.log(content[0]);
+    const serverExecutedResponse = await executeEndNode(content)
+    console.log(serverExecutedResponse)
     return null;
   }
 

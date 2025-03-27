@@ -3,6 +3,7 @@ import { Handle, Position, useNodeConnections } from '@xyflow/react';
 import { DataPassing } from '@/app/dashboard/builder/page';
 import { MergeIcon, TextIcon } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
+import { executeDescriptionNode } from '@/controllers/nodes';
  
 const handleStyle = { left: 10 };
  
@@ -57,15 +58,9 @@ function DescriptionNode({ data, id, isConnectable }:any) {
 
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
-    let output;
-    if(t[0]) {
-     output = t[0]
-    }
-    else{
-      output = nodeData.input1
-    }
+    const serverExecutedResponse = await executeDescriptionNode(t,nodeData)
     setIsExecuting(false);
-    return output
+    return serverExecutedResponse
   }
 
   const handleDescriptionValueChange = (event: any) => { 
