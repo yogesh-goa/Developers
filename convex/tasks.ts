@@ -43,6 +43,7 @@ export const createUser = mutation({
   handler: async (ctx, args) => {
     // Implement your mutation logic here
     await ctx.db.insert("agent", {
+      description: args.description,
       owner: args.owner,
       name: args.name,
       nodes: args.nodes,

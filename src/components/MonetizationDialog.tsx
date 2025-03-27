@@ -52,10 +52,11 @@ export function MonetizationDialog({
     // Prepare agent data
     const agentMonetizationData = {
       monetizationModel,
-      price: monetizationModel !== "free" ? parseFloat(price) : null,
+      price: monetizationModel !== "free" ? price : null,
       isMarketplaceListed: false, // This would come from the switch state
       name: name || "Default Agent",
       userId: userId,
+      description: description || "Agent for testing",
     };
 
     // Call the create agent function
@@ -86,6 +87,16 @@ export function MonetizationDialog({
                   placeholder="Enter agent name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="description">Agent Description</Label>
+                <Input
+                  id="description"
+                  type="text"
+                  placeholder="Enter agent name"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
 

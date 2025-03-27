@@ -17,7 +17,7 @@ export default defineSchema({
           isExecuting: v.boolean(),
           input1: v.optional(v.string()),
           input2: v.optional(v.string()),
-          edpoint: v.optional(v.string()),
+          endpoint: v.optional(v.string()),
           description: v.optional(v.string()),
           isStart: v.optional(v.boolean()),
           isEnd: v.optional(v.boolean()),
