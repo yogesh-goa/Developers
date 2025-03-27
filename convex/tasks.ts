@@ -92,3 +92,39 @@ export const getOneAgent = mutation({
     return agent;
   },
 });
+
+export const createCustomModel = mutation({
+  args:{
+    name:v.string(),
+    endpoint:v.string(),
+    inputs:v.string(),
+  },
+  handler:async(ctx,args)=>{
+    await ctx.db.insert("customModel",{
+      name:args.name,
+      endpoint:args.endpoint,
+      inputs:args.inputs
+    })
+    return {success:true}
+  }
+})
+
+export const getCustomModels = mutation({
+  args:{
+    id:v.string()    
+  },
+  handler:async(ctx,args)=>{
+    const customModels = await ctx.db.query("customModel").filter((q) => q.eq(q.field("_id"), args.id)).first();
+    if (!customModels) {
+      throw new Error("Custom Model not found");
+    }
+    return customModels;
+  }
+})
+
+export const getCustomModel = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("customModel").take(10);
+  },
+});
