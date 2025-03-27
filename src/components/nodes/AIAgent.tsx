@@ -1,6 +1,6 @@
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
 import {  useContext, useState } from 'react';
-import { DataPassing } from '@/app/dashboard/builder/page';
+import { DataPassing } from '@/app/builder/page';
 import { BotIcon } from 'lucide-react';
 import { executeAIAgentNode } from '@/controllers/nodes';
  

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
-import { DataPassing } from '@/app/dashboard/builder/page';
+import { DataPassing } from '@/app/builder/page';
 import { MergeIcon } from 'lucide-react';
 import { executeTextMergeNode } from '@/controllers/nodes';
  

@@ -37,7 +37,7 @@ export default function DashboardPage() {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>

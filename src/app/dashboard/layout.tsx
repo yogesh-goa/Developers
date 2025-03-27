@@ -150,7 +150,7 @@ export default function DashboardLayout({
               <Button size="sm">Upgrade Plan</Button>
             </div>
           </header>
-          <main className="flex-1 overflow-auto w-fit md:p-6 ml-40 pl-20">{children}</main>
+          <main className="flex-1 overflow-auto  md:p-6 ml-40 pl-20">{children}</main>
         </div>
       </div>
     </SidebarProvider>
