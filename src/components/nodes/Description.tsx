@@ -10,8 +10,7 @@ function DescriptionNode({ data, id, isConnectable }:any) {
   const [text1, setText1] = useState("");
   const [isText1Disabled, setIsText1Disabled] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false)
-  const [text2, setText2] = useState("");
-  
+
 
   const [connectedSourcesIds, setConnectedSourcesIds] = useState<string[]>([]);
   //@ts-ignore
@@ -56,17 +55,22 @@ function DescriptionNode({ data, id, isConnectable }:any) {
     },
   });
 
-  const execute = async(t:string[]) =>{
+  const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
     let output;
     if(t[0]) {
      output = t[0]
     }
     else{
-      output = text1
+      output = nodeData.input1
     }
     setIsExecuting(false);
     return output
+  }
+
+  const handleDescriptionValueChange = (event: any) => { 
+    setText1(event.target.value)
+    data.input1 = event.target.value
   }
 
   data.execute = execute;
@@ -94,7 +98,7 @@ function DescriptionNode({ data, id, isConnectable }:any) {
       </div>
       <p className='text-xs opacity-50 mt-2 mb-5 ml-0.5'>Add long form texts</p>
       <div className='mt-2 h-[10rem]'>
-        <Textarea value={text1} rows={10} onChange={(e)=>setText1(e.target.value)} disabled={isText1Disabled} className='border rounded p-1 w-[20rem] h-full'></Textarea>
+        <Textarea value={text1} rows={10} onChange={handleDescriptionValueChange} disabled={isText1Disabled} className='border rounded p-1 w-[20rem] h-full'></Textarea>
       </div>
     </div>
   );

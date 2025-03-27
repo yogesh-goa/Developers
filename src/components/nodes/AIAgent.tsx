@@ -7,21 +7,21 @@ import { BotIcon } from 'lucide-react';
 function AIAgentNode({ data, isConnectable }:any) {
   const nodeState = useContext(DataPassing);
   const [isExecuting, setIsExecuting] = useState(false);
-  const [apiKey, setApiKey] = useState("AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA")
+  const [apiKey, setApiKey] = useState("")
   const [query, setQuery] = useState("")
   const [isQueryDisabled, setIsQueryDisabled] = useState(false)
   // AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA
 
-  const execute = async(t:string[]) =>{
+  const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
-    const data = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+    const data = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${nodeData.value}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         contents: [{
-          parts: [{ text: t[0] || query }]
+          parts: [{ text: t[0] || nodeData.input1 }]
         }]
       })
     })
@@ -35,6 +35,7 @@ function AIAgentNode({ data, isConnectable }:any) {
       handleType: 'target',
       handleId: 'b',
       onConnect(connections){
+        if(connections[0].sourceHandle == "START") return;
         setQuery("AGENT OUTPUT")
         setIsQueryDisabled(true);
       },
@@ -43,6 +44,16 @@ function AIAgentNode({ data, isConnectable }:any) {
         setIsQueryDisabled(false);
       },
     });
+
+  const handleApiKeyValueChange = (event: any) => { 
+    setApiKey(event.target.value)
+    data.value = event.target.value
+  }
+
+  const handleQueryValueChange = (event: any) => { 
+    setQuery(event.target.value)
+    data.input1 = event.target.value
+  }
 
   data.execute = execute;
 
@@ -70,16 +81,15 @@ function AIAgentNode({ data, isConnectable }:any) {
         <p className='text-xs opacity-50 mt-2 mb-5 ml-0.5'>Choose an AI Agent from the following</p>
         <select className='border w-full rounded p-1' name="agents" id="agents">
           <option value="AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA">Gemini</option>
-          {/*<option value="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">Groq</option>*/}
         </select>
       </div>
       <div className='mt-2'>
         <label className='text-xs opacity-80'>API Key</label>
-        <input className='border w-full p-1 rounded' placeholder='' type='password' onChange={(e)=>setApiKey(e.target.value)} value={apiKey}></input>
+        <input className='border w-full p-1 rounded' placeholder='' type='password' onChange={handleApiKeyValueChange} value={apiKey}></input>
       </div>
       <div className='mt-2'>
         <label className='text-xs opacity-80'>Query</label>
-        <input className='border w-full p-1 rounded' placeholder='what is 2+2?' onChange={(e)=>setQuery(e.target.value)} disabled={isQueryDisabled} value={query}></input>
+        <input className='border w-full p-1 rounded' placeholder='what is 2+2?' onChange={handleQueryValueChange} disabled={isQueryDisabled} value={query}></input>
       </div>
     </div>
   );

@@ -229,7 +229,7 @@ export default function AgentBuilder() {
       //console.log(`Executing node ${nodeId} with inputs:`, incomingResults);
 
       // Execute the node with incoming results
-      const result = await node.data.execute(incomingResults);
+      const result = await node.data.execute(incomingResults, node.data);
 
       // Update executionResults
       executionResults[nodeId] = result;

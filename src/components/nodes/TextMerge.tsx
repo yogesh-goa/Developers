@@ -78,18 +78,28 @@ function TextMergeNode({ data, id, isConnectable }:any) {
   });
 
 
-  const execute = async(t:string[]) =>{
+  const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
     console.log(t, text1, text2)
     let output;
     if(t[0] && t[1]) output = t[0] + t[1];
     else if(t[0]) {
-      if(isText1Disabled) output = t[0] + text2;
-      else output = text1 + t[0];
+      if(isText1Disabled) output = t[0] + nodeData.input2;
+      else output = nodeData.input1 + t[0];
     }
-    else output = text1 + text2;   
+    else output = nodeData.input1 + nodeData.input2;   
     setIsExecuting(false);
     return output
+  }
+
+  const handleText1Change = (event: any) => { 
+    setText1(event.target.value)
+    data.input1 = event.target.value
+  }
+
+  const handleText2Change = (event: any) => { 
+    setText2(event.target.value)
+    data.input2 = event.target.value
   }
 
   data.execute = execute;
@@ -124,10 +134,10 @@ function TextMergeNode({ data, id, isConnectable }:any) {
       </div>
       <p className='text-xs opacity-50 mt-2 mb-5 ml-0.5'>Merge two texts using the following fields</p>
       <div className='mt-2'>
-        <input value={text1} onChange={(e)=>setText1(e.target.value)} disabled={isText1Disabled} className='border rounded p-1 w-full' placeholder='Text 1'></input>
+        <input value={text1} onChange={handleText1Change} disabled={isText1Disabled} className='border rounded p-1 w-full' placeholder='Text 1'></input>
       </div>
       <div className='mt-2'>
-        <input value={text2} onChange={(e)=>setText2(e.target.value)} disabled={isText2Disabled} className='border rounded p-1 w-full' placeholder='Text 2'></input>
+        <input value={text2} onChange={handleText2Change} disabled={isText2Disabled} className='border rounded p-1 w-full' placeholder='Text 2'></input>
       </div>
     </div>
   );

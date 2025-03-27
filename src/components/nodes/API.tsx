@@ -11,13 +11,18 @@ function APINode({ data, isConnectable }:any) {
   const [endpoint, setEndpoint] = useState("")
   // AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA
 
-  const execute = async(t:string[]) =>{
+  const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
-    const data = await fetch(t[0] || endpoint)
+    const data = await fetch(t[0] || nodeData.endpoint)
     const actualData = await data.json();
     const content = await actualData;
     setIsExecuting(false);
     return JSON.stringify(content);
+  }
+
+  const handleEndpointValueChange = (event: any) => { 
+    setEndpoint(event.target.value)
+    data.endpoint = event.target.value
   }
 
   data.execute = execute;
@@ -47,7 +52,7 @@ function APINode({ data, isConnectable }:any) {
       </div>
       <div className='mt-2'>
         <label className='text-xs opacity-80'>Endpoint</label>
-        <input className='border w-full p-1 rounded' placeholder='' onChange={(e)=>setEndpoint(e.target.value)} value={endpoint}></input>
+        <input className='border w-full p-1 rounded' placeholder='' onChange={handleEndpointValueChange} value={endpoint}></input>
       </div>
     </div>
   );
