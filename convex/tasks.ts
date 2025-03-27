@@ -17,7 +17,7 @@ export const createUser = mutation({
           isExecuting: v.boolean(),
           input1: v.optional(v.string()),
           input2: v.optional(v.string()),
-          edpoint: v.optional(v.string()),
+          endpoint: v.optional(v.string()),
           description: v.optional(v.string()),
           isStart: v.optional(v.boolean()),
           isEnd: v.optional(v.boolean()),
@@ -77,5 +77,54 @@ export const getUserAgent = mutation({
       throw new Error("No agents found for the specified owner");
     }
     return agents;
+  },
+});
+
+export const getOneAgent = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const agent = await ctx.db.query("agent").filter((q) => q.eq(q.field("_id"), args.id)).first();
+    if (!agent) {
+      throw new Error("Agent not found");
+    }
+    return agent;
+  },
+});
+
+export const createCustomModel = mutation({
+  args:{
+    name:v.string(),
+    endpoint:v.string(),
+    inputs:v.string(),
+  },
+  handler:async(ctx,args)=>{
+    await ctx.db.insert("customModel",{
+      name:args.name,
+      endpoint:args.endpoint,
+      inputs:args.inputs
+    })
+    return {success:true}
+  }
+})
+
+export const getCustomModels = mutation({
+  args:{
+    id:v.string()    
+  },
+  handler:async(ctx,args)=>{
+    const customModels = await ctx.db.query("customModel").filter((q) => q.eq(q.field("_id"), args.id)).first();
+    if (!customModels) {
+      throw new Error("Custom Model not found");
+    }
+    return customModels;
+  }
+})
+
+export const getCustomModel = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("customModel").take(10);
   },
 });
