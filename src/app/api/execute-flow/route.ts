@@ -181,6 +181,7 @@ async function start(nodes: any[], edges: any[]) {
 export async function POST(request: Request) {
   try {
     const { nodes, edges } = await request.json();
+    console.log("Hello")
 
     if (!nodes || !edges) {
       return NextResponse.json(
