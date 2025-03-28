@@ -23,6 +23,7 @@ const Page = ({
       const { id } = await params;
       const result = await userAgent({ id: id });
       const { _creationTime, _id, description, ...filteredResult } = result;
+      console.log(_creationTime, _id, description);
       setAgentJson({
         nodes: filteredResult.nodes || [],
         edges: filteredResult.edges || [],
