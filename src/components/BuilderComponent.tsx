@@ -38,6 +38,7 @@ import {
   BrainIcon,
   ScissorsIcon,
   TextIcon,
+  BrainCog,
 } from "lucide-react";
 import {
   Accordion,
@@ -53,8 +54,9 @@ import StartNode from "@/components/nodes/Start";
 import { MonetizationDialog } from "@/components/MonetizationDialog";
 import APINode from "@/components/nodes/API";
 import DescriptionNode from "@/components/nodes/Description";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import CustomModelNode from "./nodes/CustomModel";
 
 
 const DataPassing = createContext<{
@@ -102,6 +104,12 @@ const nodeDefinitions = [
     label: "Description Node",
     group: "Text",
   },
+  {
+    type: "CustomModel",
+    icon: <BrainCog className="h-4 w-4" />,
+    label: "Custom Model Node",
+    group: "Models",
+  },
 ];
 
 const nodeTypes = {
@@ -111,16 +119,19 @@ const nodeTypes = {
   Start: StartNode,
   API: APINode,
   Description: DescriptionNode,
+  CustomModel: CustomModelNode
 };
 
 export default function AgentBuilder(props?: { initialData?: { nodes: any[]; edges: any[] } }) {
     const [nodes, setNodes] = useState(props?.initialData?.nodes || []);
     const [edges, setEdges] = useState(props?.initialData?.edges || []);
+    const [output, setOutput] = useState("")
     const [fileUploadIndicator, setFileUploadIndicator] = useState<number>(1);
     const fileInputRef = useRef<HTMLInputElement>(null);
     let globalGraph = {}; // Changed to normal variable
     let executionResults = { "0": [], "1": [], "2": [], "3": [], "4": [] };
     const edgeReconnectSuccessful = useRef(false);
+ 
 
     useEffect(() => {
         setNodes(props?.initialData?.nodes || []);
@@ -439,7 +450,7 @@ export default function AgentBuilder(props?: { initialData?: { nodes: any[]; edg
 
     return (
         <DataPassing.Provider
-            value={{ nodes, edges, setNodes, setEdges, fileUploadIndicator }}
+            value={{ nodes, edges, setNodes, setEdges, fileUploadIndicator, setOutput }}
         >
             <div className="flex min-h-screen flex-col">
                 <div className="absolute z-10 top-10 right-10 flex items-center gap-4">
@@ -555,6 +566,13 @@ export default function AgentBuilder(props?: { initialData?: { nodes: any[]; edg
                                             <Background gap={12} size={1} />
                                         </ReactFlow>
                                     </div>
+                                    {
+                                        output &&
+                                        <div className="absolute bg-white border w-1/3 top-24 right-20 rounded-xl p-10 z-20">
+                                            <p className=" text-xl font-semibold mb-2">Output</p>
+                                            <p>{output}</p>
+                                        </div>
+                                    }
                                 </div>
                             </TabsContent>
                     </Tabs>

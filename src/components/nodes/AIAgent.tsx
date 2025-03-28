@@ -7,17 +7,46 @@ import { executeAIAgentNode } from '@/controllers/nodes';
  
  
 function AIAgentNode({ data, isConnectable }:any) {
-  const nodeState = useContext(DataPassing);
+  const { fileUploadIndicator } = useContext(DataPassing);
   const [isExecuting, setIsExecuting] = useState(false);
   const [apiKey, setApiKey] = useState("")
   const [query, setQuery] = useState("")
   const [isQueryDisabled, setIsQueryDisabled] = useState(false)
   // AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA
 
-  useEffect(()=>{
-      if(data.apiKey) setApiKey(data.apiKey)
-      if(data.query) setQuery(data.query)
-  },[data])
+  /*useEffect(() => {
+    // Check incoming edges to determine connected sources
+    
+    const incomingEdges = edges.filter((edge:any) => 
+      edge.target === id && (edge.targetHandle === 'b' || edge.targetHandle === 'b2')
+    );
+
+    const sourceIds = incomingEdges.map((edge:any) => edge.source);
+    setConnectedSourcesIds(sourceIds);
+
+    // Update text fields and disable status based on connections
+    if (sourceIds.length > 0) {
+      if (incomingEdges.some((edge:any) => edge.targetHandle === 'b')) {
+        setText1("AGENT OUTPUT");
+        setIsText1Disabled(true);
+      }
+      else{
+        setText1("")
+        setIsText1Disabled(false);
+      }
+      if (incomingEdges.some((edge:any) => edge.targetHandle === 'b2')) {
+        setText2("AGENT OUTPUT");
+        setIsText2Disabled(true);
+      }
+      else{
+        setText2("")
+        setIsText2Disabled(false);
+      }
+    } else {
+      setIsText1Disabled(false);
+      setIsText2Disabled(false);
+    }
+  }, [fileUploadIndicator]);*/
 
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);
@@ -49,6 +78,12 @@ function AIAgentNode({ data, isConnectable }:any) {
     setQuery(event.target.value)
     data.input1 = event.target.value
   }
+
+  useEffect(()=>{
+    console.log(data)
+    if(data.value) setApiKey(data.value)
+    if(data.input1) setQuery(data.input1)
+},[data])
 
   data.execute = execute;
 

@@ -21,6 +21,29 @@ export const executeAPINode = async(t:string[], nodeData:any) =>{
     const content = await actualData;
     return JSON.stringify(content);
 }
+function parseJsonObject(str:string) {
+  try {
+      return eval(`(${str})`);
+  } catch (error) {
+      console.error("Invalid object string:", error);
+      return null;
+  }
+}
+
+export const executeCustomModelNode = async(t:string[], nodeData:any) =>{
+  const inputString =  t[0] || nodeData.input1;
+  
+  const data = await fetch("/api/predict", {
+    method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({inputString}),
+  })
+  const actualData = await data.json();
+  const content = await actualData;
+  return content.prediction;
+}
 
 export const executeDescriptionNode = async(t:string[], nodeData:any) =>{
     let output;

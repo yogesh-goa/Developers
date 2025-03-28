@@ -5,7 +5,7 @@ export async function POST(req) {
         const formData = await req.formData(); // Get the FormData from request
 
         // Your FastAPI backend URL
-        const fastApiUrl = "https://4b58-35-185-198-212.ngrok-free.app/upload";
+        const fastApiUrl = "https://6beb-35-185-198-212.ngrok-free.app/upload";
 
         // Forward the request to FastAPI
         const response = await fetch(fastApiUrl, {

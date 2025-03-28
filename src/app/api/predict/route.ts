@@ -1,26 +1,35 @@
 import { NextResponse } from "next/server";
 
-export async function POST(req) {
-    try {
-        const formData = await req.formData(); // Get the FormData from request
 
-        // Your FastAPI backend URL
-        const fastApiUrl = "https://c82f-35-185-198-212.ngrok-free.app/predict";
+export async function POST(request) {
+  try {
+    const { inputString } = await request.json();
+    console.log("B")
+    const API_URL = 'https://6beb-35-185-198-212.ngrok-free.app'; // Replace with your ngrok URL
+    // Format the input string as a JSON array string
+    const formattedInput = inputString;
+    console.log(JSON.stringify({
+        input_array: formattedInput,
+      }))
+    
+    const response = await fetch(`${API_URL}/predict`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        input_array: formattedInput,
+      }),
+    });
 
-        // Forward the request to FastAPI
-        const response = await fetch(fastApiUrl, {
-            method: "POST",
-            body: formData, // Send the same FormData
-            headers: {
-                // Do NOT set 'Content-Type', browser will handle it
-            },
-        });
+    const data = await response.json();
 
-        // Get response from FastAPI
-        const data = await response.json();
-        console.log(data)
-        return NextResponse.json(data);
-    } catch (error) {
-        return NextResponse.json({ error: "Failed to proxy request", details: error.message }, { status: 500 });
+    if (!response.ok) {
+      return NextResponse.json({ error: data.error || 'Prediction failed' }, { status: response.status });
     }
+
+    return NextResponse.json({ prediction: data.prediction });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

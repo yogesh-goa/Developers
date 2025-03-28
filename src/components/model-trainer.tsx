@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { AlertCircle, FileUp, Play } from "lucide-react"
+import { AlertCircle, FileUp, Play, SaveIcon } from "lucide-react"
 import ModelConfigForm from "./model-config-form"
 import TrainingResults from "./training-results"
+import { useMutation } from "convex/react"
+import { api } from "../../convex/_generated/api"
+import { useAuth } from "@clerk/nextjs"
 
 export default function ModelTrainer() {
   const [isTraining, setIsTraining] = useState(false)
@@ -24,6 +27,9 @@ export default function ModelTrainer() {
   })
   const [dataset, setDataset] = useState<File | null>(null)
   const [results, setResults] = useState<any>(null)
+  const [endpoint, setEndpoint] = useState("")
+  const customModel = useMutation(api.tasks.createCustomModel)
+  const user = useAuth();
 
   const handleStartTraining = async () => {
     if (!dataset) {
@@ -52,7 +58,9 @@ export default function ModelTrainer() {
 
         const data = await response.json();
         console.log("Response:", data);
+        setEndpoint(data.api)
         setResults({accuracy: data.accuracy})
+        setIsTraining(false)
     } catch (error) {
         console.error("Upload error:", error);
     }
@@ -65,6 +73,13 @@ export default function ModelTrainer() {
 
   const handleDatasetUpload = (file: File) => {
     setDataset(file)
+  }
+
+  const saveModel = async()=>{
+    const makeCustomModel = await customModel({name:modelConfig.modelName,
+        endpoint:endpoint,
+        inputs:"",
+        owner: user.userId!})
   }
 
   return (
@@ -92,21 +107,15 @@ export default function ModelTrainer() {
             </div>
           )}
 
-          {isTraining ? (
-            <div className="space-y-4">
-              <Progress value={progress} className="h-2" />
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>
-                  Epoch {currentEpoch}/{totalEpochs}
-                </span>
-                <span>{Math.round(progress)}%</span>
-              </div>
-            </div>
-          ) : (
-            <Button className="w-full" size="lg" onClick={handleStartTraining} disabled={!dataset}>
+   
+            <Button className="w-full" size="lg" onClick={handleStartTraining} disabled={isTraining}>
               <Play className="mr-2 h-4 w-4" /> Start Training
             </Button>
-          )}
+
+            <Button className="w-full" size="lg" onClick={saveModel} disabled={isTraining}>
+              <SaveIcon className="mr-2 h-4 w-4" /> Save Model
+            </Button>
+ 
         </div>
       </Card>
 
