@@ -49,9 +49,18 @@ export async function POST(
     const result = await response.json();
     console.log("Flow execution result:", result);
 
+    // Extract the last element from executionOrder
+    const lastExecutionId = result.executionOrder[result.executionOrder.length - 1];
+
+    // Retrieve the result of the last executed node
+    const lastExecutionResult = result.results[lastExecutionId];
+
+    // Log the last execution result
+    console.log("Last execution result:", lastExecutionResult);
+
     return NextResponse.json({ 
       message: "Request received successfully", 
-      agentFlow 
+      lastExecutionResult
     });
   } catch (error) {
     console.error("Error at register route:", error);
