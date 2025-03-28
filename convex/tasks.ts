@@ -97,6 +97,19 @@ export const getUserCustomModel = mutation({
   },
 });
 
+export const getOneAgent2 = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const agent = await ctx.db.query("agent").filter((q) => q.eq(q.field("_id"), args.id)).first();
+    if (!agent) {
+      throw new Error("Agent not found");
+    }
+    return agent;
+  },
+});
+
 export const getOneAgent = mutation({
   args: {
     id: v.string(),

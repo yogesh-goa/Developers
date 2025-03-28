@@ -173,7 +173,16 @@ export default function AgentsPage() {
                         Preview
                       </Button>
                     </Link>
-                    <Button size="sm">{userId === agent.owner ? "Manage" : "Buy"}</Button>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                      navigator.clipboard.writeText(`http://localhost:3000/api/agents/${agent._id}`).then(() => {
+                        alert("Agent data copied to clipboard!");
+                      });
+                      }}
+                    >
+                      Get Endpoint
+                    </Button>
                   </div>
                 </CardFooter>
               </Card>
