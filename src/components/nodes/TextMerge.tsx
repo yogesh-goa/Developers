@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
-import { DataPassing } from '@/app/builder/page';
+import { DataPassing } from '@/components/BuilderComponent';
 import { MergeIcon } from 'lucide-react';
 import { executeTextMergeNode } from '@/controllers/nodes';
  
@@ -17,6 +17,7 @@ function TextMergeNode({ data, id, isConnectable }:any) {
   const [connectedSourcesIds, setConnectedSourcesIds] = useState<string[]>([]);
   //@ts-ignore
   const { fileUploadIndicator, edges } = useContext(DataPassing);
+
 
   useEffect(() => {
     // Check incoming edges to determine connected sources
@@ -52,10 +53,17 @@ function TextMergeNode({ data, id, isConnectable }:any) {
     }
   }, [fileUploadIndicator]);
 
+  useEffect(()=>{
+    console.log(data)
+    if(data.input1) setText1(data.input1)
+    if(data.input2) setText2(data.input2)
+  },[data])
+
   const connections = useNodeConnections({
     handleType: 'target',
     handleId: 'b',
     onConnect(connections){
+      if(connections[0].sourceHandle == "START") return;
       setText1("AGENT OUTPUT")
       setIsText1Disabled(true);
       data.value = true
@@ -71,6 +79,7 @@ function TextMergeNode({ data, id, isConnectable }:any) {
     handleType: 'target',
     handleId: 'b2',
     onConnect(connections){
+      if(connections[0].sourceHandle == "START") return;
       setText2("AGENT OUTPUT")
       setIsText2Disabled(true);
     },

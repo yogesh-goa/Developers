@@ -164,7 +164,7 @@ async function executeNodeRecursively(
 
 // Main execution function
 async function start(nodes: any[], edges: any[]) {
-  executionResults = { "0": [], "1": [], "2": [], "3": [], "4": [] };
+  executionResults = {  };
   globalGraph = buildGraph(nodes, edges);
   
   const executionOrder = determineExecutionOrder(nodes, edges);
@@ -181,6 +181,7 @@ async function start(nodes: any[], edges: any[]) {
 export async function POST(request: Request) {
   try {
     const { nodes, edges } = await request.json();
+    console.log("Hello")
 
     if (!nodes || !edges) {
       return NextResponse.json(

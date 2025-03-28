@@ -39,4 +39,13 @@ export default defineSchema({
     }),
     isActive: v.boolean(),
   }),
+
+  customModel: defineTable({
+    name:v.string(),
+    owner:v.string(),
+    endpoint:v.string(),
+    inputs:v.string(),
+  })
 });
+
+

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Handle, Position, useNodeConnections } from '@xyflow/react';
-import { DataPassing } from '@/app/builder/page';
+import { DataPassing } from '@/components/BuilderComponent';
 import { MergeIcon, TextIcon } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { executeDescriptionNode } from '@/controllers/nodes';
@@ -41,6 +41,10 @@ function DescriptionNode({ data, id, isConnectable }:any) {
       setIsText1Disabled(false);
     }
   }, [fileUploadIndicator]);
+
+  useEffect(()=>{
+    if(data.input1) setText1(data.input1)
+  },[data])
 
   const connections = useNodeConnections({
     handleType: 'target',

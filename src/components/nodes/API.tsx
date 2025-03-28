@@ -1,16 +1,20 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { DataPassing } from '@/app/builder/page';
-import { BotIcon, CableIcon } from 'lucide-react';
+import { DataPassing } from '@/components/BuilderComponent';
+import {  CableIcon } from 'lucide-react';
 import { executeAPINode } from '@/controllers/nodes';
  
-const handleStyle = { left: 10 };
+//const handleStyle = { left: 10 };
  
 function APINode({ data, isConnectable }:any) {
   const nodeState = useContext(DataPassing);
   const [isExecuting, setIsExecuting] = useState(false);
   const [endpoint, setEndpoint] = useState("")
   // AIzaSyCzUvvDCSCI8pW0AfBqH002fyECvQSosKA
+
+  useEffect(()=>{
+    if(data.endpoint) setEndpoint(data.endpoint)
+  },[data])
 
   const execute = async(t:string[], nodeData:any) =>{
     setIsExecuting(true);

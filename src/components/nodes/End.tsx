@@ -1,17 +1,19 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { FlagIcon } from 'lucide-react';
 import { executeEndNode } from '@/controllers/nodes';
+import { DataPassing } from '../BuilderComponent';
  
 
  
 function EndNode({ data, isConnectable }:any) {
-  
+  const { setOutput } = useContext(DataPassing);
 
   const execute = async(content:string) =>{
     console.info("Agent response: ");
     const serverExecutedResponse = await executeEndNode(content)
     console.log(serverExecutedResponse)
+    setOutput(serverExecutedResponse);
     return null;
   }
 

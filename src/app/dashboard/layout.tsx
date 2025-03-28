@@ -44,7 +44,7 @@ export default function DashboardLayout({
           <SidebarHeader className="border-b">
             <div className="flex items-center gap-2 px-2 py-3">
               <Bot className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">AgentForge</span>
+              <span className="font-bold text-xl">AutoAgent</span>
             </div>
           </SidebarHeader>
           <SidebarContent>
@@ -62,14 +62,6 @@ export default function DashboardLayout({
                   <Link href="/dashboard/agents">
                     <Bot className="h-4 w-4" />
                     <span>My Agents</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/dashboard/analytics"} tooltip="Analytics">
-                  <Link href="/dashboard/analytics">
-                    <BarChart3 className="h-4 w-4" />
-                    <span>Analytics</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
